@@ -206,6 +206,33 @@ describe('token and account state', () => {
 });
 
 describe('CORS', () => {
+    test('production demo preflight accepts the showcase origin without extra configuration', async () => {
+        const prevOrigins = process.env.CORS_ORIGINS;
+        const prevEnv = process.env.NODE_ENV;
+        try {
+            delete process.env.CORS_ORIGINS;
+            process.env.NODE_ENV = 'production';
+            const origin = 'https://poth-collective-frontend.vercel.app';
+            const res = await request(app).options('/api/users/demo')
+                .set('Origin', origin)
+                .set('Access-Control-Request-Method', 'POST')
+                .set('Access-Control-Request-Headers', 'content-type');
+            expect(res.status).toBe(200);
+            expect(res.headers['access-control-allow-origin']).toBe(origin);
+            expect(res.headers['access-control-allow-methods']).toContain('POST');
+            expect(res.headers['access-control-allow-headers']).toMatch(/Content-Type/i);
+            const untrusted = await request(app).options('/api/users/demo')
+                .set('Origin', 'https://poth-collective-frontend-preview.vercel.app')
+                .set('Access-Control-Request-Method', 'POST');
+            expect(untrusted.status).toBe(403);
+            expect(untrusted.headers['access-control-allow-origin']).toBeUndefined();
+        } finally {
+            if (prevOrigins === undefined) delete process.env.CORS_ORIGINS;
+            else process.env.CORS_ORIGINS = prevOrigins;
+            process.env.NODE_ENV = prevEnv;
+        }
+    });
+
     test('a configured trusted origin is allowed and echoed', async () => {
         const res = await request(app).get('/health').set('Origin', 'https://trusted.example');
         expect(res.headers['access-control-allow-origin']).toBe('https://trusted.example');

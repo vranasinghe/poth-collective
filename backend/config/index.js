@@ -1,8 +1,8 @@
 // Central runtime configuration. Reads process.env lazily so tests can set it before use.
 // dotenv is loaded only by server.js (never by the app factory), so tests can never pick up backend/.env.
 
-// This separate deployment accepts only explicitly configured production origins.
-const DEFAULT_WEB_ORIGINS = [];
+// Trust the standalone production frontend; previews and custom domains must be configured explicitly.
+const DEFAULT_WEB_ORIGINS = ['https://poth-collective-frontend.vercel.app'];
 
 const DEV_ORIGINS = [
     'http://localhost:8080',
