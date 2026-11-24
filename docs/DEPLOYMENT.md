@@ -21,7 +21,9 @@ Record the assigned API origin and confirm `<API_ORIGIN>/health` returns HTTP 20
 
 Import the same repository with **Root Directory `frontend`**, framework **Other**. `frontend/vercel.json` defines `npm ci`, the build command and `dist` output.
 
-Set `EXPO_PUBLIC_API_URL` to the actual HTTPS Render API origin without `/api`. It is public and embedded at build time. Never place MongoDB, JWT or Cloudinary secrets in frontend variables. The build rejects a missing/non-HTTPS API origin.
+Set `EXPO_PUBLIC_API_URL` to the actual HTTPS Render API origin without `/api` in both Vercel **Production and Preview** environments. It is public and embedded at build time. Never place MongoDB, JWT or Cloudinary secrets in frontend variables. Redeploy after changing environment scopes; existing builds retain their old values.
+
+Vercel uses `scripts/build-vercel.js`. If a Preview build has no API variable, it uses the public showcase API `https://poth-collective.onrender.com`. Explicit values take priority and must pass validation. Production builds still reject a missing origin, and all builds reject non-HTTPS origins or `/api` paths. `npm run build` remains strict for non-Vercel builds. Run `npm run test:vercel` to check these deployment rules.
 
 Generated HTML and assets are served before the `/index.html` fallback for client-side dynamic paths. Set the actual Vercel production origin in Render's CORS configuration. Preview deployments require their own explicitly allowed origins.
 
