@@ -51,8 +51,8 @@ export type EmptyStateProps = {
 export function EmptyState({ title, message, icon = 'book-outline', action, secondaryAction, compact }: EmptyStateProps) {
     return (
         <StateLayout icon={icon} tone="textMuted" title={title} message={message} compact={compact}>
-            {action ? <PrimaryButton title={action.label} icon={action.icon} onPress={action.onPress} /> : null}
-            {secondaryAction ? <SecondaryButton title={secondaryAction.label} icon={secondaryAction.icon} appearance="tonal" onPress={secondaryAction.onPress} /> : null}
+            {action ? <PrimaryButton title={action.label} icon={action.icon} onPress={action.onPress} style={{ alignSelf: 'center' }} /> : null}
+            {secondaryAction ? <SecondaryButton title={secondaryAction.label} icon={secondaryAction.icon} appearance="tonal" onPress={secondaryAction.onPress} style={{ alignSelf: 'center' }} /> : null}
         </StateLayout>
     );
 }
@@ -82,7 +82,7 @@ export function ErrorState({ title, message, onRetry, retrying, offline, compact
             message={message ?? (offline ? 'Check your connection. Your changes are safe and nothing was lost.' : 'This is usually a temporary connection problem. Try again in a moment.')}
             compact={compact}
         >
-            {onRetry ? <PrimaryButton title="Try again" icon="refresh" onPress={onRetry} loading={retrying} /> : null}
+            {onRetry ? <PrimaryButton title="Try again" icon="refresh" onPress={onRetry} loading={retrying} style={{ alignSelf: 'center' }} /> : null}
         </StateLayout>
     );
 }
