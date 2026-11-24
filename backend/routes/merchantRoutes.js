@@ -1,0 +1,10 @@
+const router = require('express').Router();
+const { protect, isShopOwner } = require('../middlewares/authMiddleware');
+const controller = require('../controllers/merchantController');
+router.use(protect, isShopOwner);
+router.get('/summary', controller.summary);
+router.get('/inventory', controller.inventory);
+router.get('/inventory/:id', controller.inventoryItem);
+router.get('/orders', controller.orders);
+router.get('/orders/:id', controller.orderDetail);
+module.exports = router;

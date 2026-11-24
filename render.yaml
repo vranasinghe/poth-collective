@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: poth-collective-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    region: singapore
+    plan: free
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DEMO_ENABLED
+        value: "true"
+      # Secrets: Render prompts for these when the Blueprint is first created
+      - key: MONGO_URI
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      # Generated once by Render; existing sessions are invalidated if this changes
+      - key: JWT_SECRET
+        generateValue: true
+
+      - key: CORS_ORIGINS
+        sync: false
