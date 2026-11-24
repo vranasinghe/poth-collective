@@ -23,7 +23,9 @@ Import the same repository with **Root Directory `frontend`**, framework **Other
 
 Set `EXPO_PUBLIC_API_URL` to the actual HTTPS Render API origin without `/api`. It is public and embedded at build time. Never place MongoDB, JWT or Cloudinary secrets in frontend variables. The build rejects a missing/non-HTTPS API origin.
 
-Generated HTML and assets are served before the `/index.html` fallback for client-side dynamic paths. Set the actual Vercel production origin in Render's CORS configuration. Preview deployments require their own explicitly allowed origins.
+Generated HTML and assets are served before the `/index.html` fallback for client-side dynamic paths. The API trusts the production origin `https://poth-collective-frontend.vercel.app` by default. Custom domains and preview deployments require their own explicitly allowed origins in Render's `CORS_ORIGINS` configuration (origin only, without a path or trailing slash).
+
+If the page loads but demo entry fails, check the browser's request to `/api/users/demo`. A 403 response containing `Not allowed by CORS` means the frontend origin is missing from the API allowlist. Add that exact origin to Render's `CORS_ORIGINS` and restart the API, or deploy the API revision containing the production-origin default. Verify the preflight response includes `Access-Control-Allow-Origin` matching the frontend origin; `/health` returning 200 alone does not verify browser access.
 
 ## Handoff
 
