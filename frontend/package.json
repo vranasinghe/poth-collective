@@ -9,6 +9,7 @@
     "ios": "expo run:ios",
     "web": "expo start --web --port 8080",
     "build": "node scripts/validate-build-env.js && expo export --platform web",
+    "test:vercel": "node --test scripts/build-vercel.test.js",
     "lint": "expo lint",
     "test": "jest --config jest.config.js",
     "design:contrast": "jest --config jest.config.js src/design"

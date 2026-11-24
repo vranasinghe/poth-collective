@@ -50,3 +50,4 @@ app-example
 *.log
 coverage/
 dist-*/
+.local-run/
